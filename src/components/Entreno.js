@@ -97,27 +97,17 @@ function Entreno(props) {
                 <Card.Text>
                   <ListGroup variant="flush">
                     <ListGroup.Item>
-                      Numero de repeticiones:{" "}
-                      <h3>
-                        {" "}
-                        {activeExercise === true
-                          ? datos.numRepeticiones
-                          : 0}{" "}
-                      </h3>
+                      Numero de repeticiones: <h3>{datos.numRepeticiones}</h3>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      Ultimo rango de movimiento:{" "}
-                      <h3>
-                        {activeExercise === true ? datos.rangoDistancia : 0}
-                      </h3>
+                      Ultimo rango de movimiento:
+                      <h3>{datos.rangoDistancia}</h3>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      Calorias quemadas:{" "}
-                      <h3>{activeExercise === true ? datos.calorias : 0}</h3>
+                      Calorias quemadas: <h3>{datos.calorias}</h3>
                     </ListGroup.Item>
                     <ListGroup.Item>
-                      Frecuencia cardiaca:{" "}
-                      <h3>{activeExercise === true ? datos.pulso : 0} </h3>
+                      Frecuencia cardiaca: <h3>{datos.pulso} </h3>
                     </ListGroup.Item>
                   </ListGroup>
                 </Card.Text>
