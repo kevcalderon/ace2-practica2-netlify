@@ -59,7 +59,7 @@ function Entreno(props) {
   };
 
   useEffect(() => {
-    setTimeout(getData, 1000);
+    setTimeout(getData, 1500);
   });
 
   return (
@@ -98,6 +98,10 @@ function Entreno(props) {
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       Numero de repeticiones: <h3>{datos.numRepeticiones}</h3>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      Frecuencia de repetición:{" "}
+                      <h3>{datos.frecuenciaRepeticion}</h3>
                     </ListGroup.Item>
                     <ListGroup.Item>
                       Ultimo rango de movimiento:
