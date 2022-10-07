@@ -89,7 +89,7 @@ function Grafica(props) {
           datasets:[
             {
               label: "Frecuencia Cardíaca",
-              data: datosExperimento.map((data) => data.frecuenciaRepeticion),
+              data: datosExperimento.map((data) => data.pulso),
               borderColor: ['#f83e0e'],
               backgroundColor: ['#ffffff'],
               //fontColor: ['#ff2323']
@@ -157,7 +157,7 @@ function Grafica(props) {
         scales:{
             y: {
                 min:0,      
-                max: 250,          
+                max: 150,          
                 grid: {
                     borderColor: ['#FFFFFF']
                 },
@@ -211,7 +211,7 @@ function Grafica(props) {
         scales:{
             y: {
                 min:0,      
-                max: 10,          
+                max: 30,          
                 grid: {
                     borderColor: ['#FFFFFF']
                 },
