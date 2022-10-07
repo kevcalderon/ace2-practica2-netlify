@@ -103,7 +103,7 @@ function Grafica(props) {
           scales:{
             y: {
                 min:0,      
-                max: 20,          
+                max: 125,          
                 grid: {
                     borderColor: ['#FFFFFF']
                 },
