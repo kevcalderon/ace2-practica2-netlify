@@ -12,6 +12,13 @@ export default function DashboardResumen(props) {
       var current = new Date();
       current.setDate(current.getDate() - calcularLunes(current.getDay()));
       var lunes = current.toISOString().substring(0,10);  
+
+      var lista = [
+        {
+            idEntreno:0,
+            nombreEntreno:'General'
+        }
+      ];
     
       const [fechaInicio, setFechaInicio] = useState(lunes);
       const [fechaFin, setFechaFin] = useState(hoy);
@@ -20,21 +27,58 @@ export default function DashboardResumen(props) {
       const [rangoMaximoMovimiento, setRangoMaximoMovimiento] = useState(0);
       const [rangoPromedioMovimiento, setRangoPromedioMovimiento] = useState(0);
       const [totalCalorias, setTotalCalorias] = useState(0);
+      //const [fechaEntrenamiento, setFechaEntrenamiento] = useState('yyyy/MM/dd');
+      const [entreno, setEntreno] = useState(0);
+      const [listaEntrenos, setListaEntrenos] = useState(lista.map(o => (
+        <option key={o.idEntreno} value={o.idEntreno}>{o.nombreEntreno}</option>
+      )));      
 
-      const url= `https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}`;
+      /*const url = 
+        entreno === 0 ? `https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}`
+                      : `https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}/idEntreno/${entreno}`;*/
     
-        fetch(url)
+        fetch((entreno === "0" || entreno === 0) ? `https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}`
+        : `https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}/idEntreno/${entreno}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data); 
-            console.log(url);   
+            console.log(data);             
+            console.log("Num entreno: "+entreno);  
+            (entreno === "0" || entreno === 0) ? console.log(`https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}`)
+            : console.log(`https://api-ace2-pract2.herokuapp.com/entreno-dashboard/conteo/fechaInicial/${fechaInicio}/fechaFinal/${fechaFin}/idUsuario/${props.idUsuario}/idEntreno/${entreno}`);
             setTotalRepeticiones(data.totalRepeticiones);        
             setTiempoTotalEntrenamiento(data.tiempoTotalEntreno);
             setRangoMaximoMovimiento(data.rangoMaxMov);
             setRangoPromedioMovimiento(data.rangoPromedioMov);
             setTotalCalorias(data.totalCalorias);
+            if(entreno === "0" || entreno === 0){              
+              //console.warn(data.entrenos);
+              lista = data.entrenos;
+              lista.push({
+                idEntreno:0,
+                nombreEntreno:'General',
+                fecha: ''
+                });
+              setListaEntrenos(lista.map(o => (
+                <option key={o.idEntreno} value={o.idEntreno}>{o.nombreEntreno + ' ' + o.fecha}</option>
+              )));
+              console.log('general');
+              console.log(listaEntrenos);
+              //console.warn(data.entrenos);
+              /*
+              lista.push({
+                idEntreno:1,
+                nombre:'General1'
+              });
+              setListaEntrenos(lista);*/
+            }
           })
           .catch((err) => console.log(err));
+  
+          const handleChange = event => {
+            //console.log(event.target.value);
+            setEntreno(event.target.value);
+          };
+
   return (
     <>
     <div id="divReporte" className="container text-center">    
@@ -56,6 +100,11 @@ export default function DashboardResumen(props) {
                     format= 'yyyy-MM-dd'
                     onChange={e=>setFechaFin(e.target.value)} 
                   />             
+      </div>
+      <div className='caja fechas'>
+        <select id="selectEntreno" onChange={handleChange}>
+          {listaEntrenos}
+        </select>
       </div>       
       <div className='caja grafica'>
         <div className="row">          
@@ -110,8 +159,8 @@ export default function DashboardResumen(props) {
               </div> 
               <div className="row">
                 <div className="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
+                  <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                 </svg>
                    <br/>
                 </div>
@@ -130,7 +179,7 @@ export default function DashboardResumen(props) {
               </div> 
               <div className="row">
                 <div className="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-plus-slash-minus" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" className="bi bi-plus-slash-minus" viewBox="0 0 16 16">
                   <path d="m1.854 14.854 13-13a.5.5 0 0 0-.708-.708l-13 13a.5.5 0 0 0 .708.708ZM4 1a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 4 1Zm5 11a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 9 12Z"/>
                 </svg><br/>
                 </div>
@@ -151,7 +200,7 @@ export default function DashboardResumen(props) {
               </div> 
               <div className="row">
                 <div className="col">
-                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" className="bi bi-fire" viewBox="0 0 16 16">
                   <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/>
                 </svg><br/>
                 </div>
